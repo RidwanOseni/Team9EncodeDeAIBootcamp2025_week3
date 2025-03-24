@@ -1,0 +1,2 @@
+import '../globals.css';
+export default function RootLayout({ children }: { children: React.ReactNode }) { return (<html lang="en"><body className="p-8 font-sans"><nav className="space-x-4 mb-8"><a href="/characters" className="underline">Characters</a><a href="/story" className="underline">Story</a></nav>{children}</body></html>); }
