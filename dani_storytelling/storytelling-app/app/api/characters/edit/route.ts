@@ -1,0 +1,4 @@
+import prisma from '../../../../lib/prisma'; import { NextResponse } from 'next/server';
+export async function GET(_req: Request, { params }: { params: { id: string } }) { return NextResponse.json(await prisma.character.findUnique({ where: { id: Number(params.id) } })); }
+export async function PUT(req: Request, { params }: { params: { id: string } }) { const data = await req.json(); return NextResponse.json(await prisma.character.update({ where: { id: Number(params.id) }, data })); }
+export async function DELETE(_req: Request, { params }: { params: { id: string } }) { await prisma.character.delete({ where: { id: Number(params.id) } }); return NextResponse.json({}); }
