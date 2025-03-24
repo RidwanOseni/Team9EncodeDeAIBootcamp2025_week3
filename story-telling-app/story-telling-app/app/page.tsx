@@ -39,19 +39,39 @@ export default function Chat() {
     tone: '',
   });
 
-  const handleChange = ({ target: { name, value } }) => {
+  const handleChange = ({
+    target: { name, value },
+  }: {
+    target: { name: string; value: string };
+  }) => {
     setState({
       ...state,
       [name]: value,
     });
   };
 
-  const handleInputChange = (setter) => (event) => {
-    setter(event.target.value);
+  const handleInputChange =
+    (setter: (value: string) => void) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setter(event.target.value);
+    };
+
+  const isNameUnique = (nameToCheck: string, excludeId?: number): boolean => {
+    console.log(characters);
+    console.log(nameToCheck);
+    return !characters.some(
+      (character) =>
+        character.name.toLowerCase() === nameToCheck.toLowerCase() &&
+        character.id !== excludeId
+    );
   };
 
   const handleAddOrEditCharacter = () => {
     if (editingCharacterId !== null) {
+      if (!isNameUnique(name, editingCharacterId)) {
+        alert('A character with this name already exists!');
+        return;
+      }
       setCharacters((prev) =>
         prev.map((character) =>
           character.id === editingCharacterId
@@ -61,6 +81,10 @@ export default function Chat() {
       );
       setEditingCharacterId(null);
     } else {
+      if (!isNameUnique(name)) {
+        alert('A character with this name already exists!');
+        return;
+      }
       setCharacters((prev) => [
         ...prev,
         { id: Date.now(), name, description, personality },
